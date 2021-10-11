@@ -3,17 +3,17 @@ FROM registry.redhat.io/rhosp-rhel8/openstack-cinder-volume:16.1.6-7
 
 MAINTAINER HPE
 
-LABEL name="rhosp16.1/openstack-cinder-volume-hpe" \
+LABEL name="rhosp16.1.6/openstack-cinder-volume-hpe" \
       maintainer="sneha.rai@hpe.com" \
       vendor="HPE" \
-      release="16.1" \
-      summary="Red Hat OpenStack Platform 16.1 cinder-volume HPE plugin" \
+      release="16.1.6" \
+      summary="Red Hat OpenStack Platform 16.1.6 cinder-volume HPE plugin" \
       description="Cinder plugin for HPE 3PAR and Primera"
 
 # switch to root and install a custom RPM, etc.
 USER "root"
 
-RUN export http_proxy=http://web-proxy.atl.hpecorp.net:8080/ && export https_proxy=http://web-proxy.atl.hpecorp.net:8080/
+# RUN export http_proxy=http://web-proxy.atl.hpecorp.net:8080/ && export https_proxy=http://web-proxy.atl.hpecorp.net:8080/
 
 # add below command so that, when container is built on 
 # RH catalog page, RH 'vulnerability' test gets passed.
