@@ -17,7 +17,7 @@ RUN export http_proxy=http://web-proxy.atl.hpecorp.net:8080/ && export https_pro
 
 # add below command so that, when container is built on 
 # RH catalog page, RH 'vulnerability' test gets passed.
-# RUN yum -y update-minimal --security --sec-severity=Important --sec-severity=Critical
+RUN yum -y update-minimal --security --sec-severity=Important --sec-severity=Critical
 
 # install python module python-3parclient(dependent module for HPE 3PAR Cinder driver)
 RUN curl "https://bootstrap.pypa.io/get-pip.py" -o "get-pip.py" && python get-pip.py && pip install -U setuptools && pip install python-3parclient==4.2.11 && rm get-pip.py
