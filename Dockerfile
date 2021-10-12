@@ -13,11 +13,31 @@ LABEL name="rhosp16.1.6/openstack-cinder-volume-hpe" \
 # switch to root and install a custom RPM, etc.
 USER "root"
 
+# Copy entitlements
+COPY ./etc_pki_entitlement/* /etc/pki/entitlement
+
+# Copy subscription manager configurations
+COPY ./rhsm.conf /etc/rhsm
+COPY ./etc_rhsm_ca/* /etc/rhsm/ca
+COPY ./etc_pki_rpm-gpg/RPM-GPG-KEY-redhat-release /etc/pki/rpm-gpg
+
 RUN export http_proxy=http://web-proxy.atl.hpecorp.net:8080/ && export https_proxy=http://web-proxy.atl.hpecorp.net:8080/
+
+RUN rm /etc/rhsm-host && \
+    # Initialize /etc/yum.repos.d/redhat.repo
+    # See https://access.redhat.com/solutions/1443553
+    subscription-manager repos --disable=* && \
+    subscription-manager repos --enable=rhel-8-for-x86_64-baseos-rpms --enable=rhel-8-for-x86_64-appstream-rpms && \
 
 # add below command so that, when container is built on 
 # RH catalog page, RH 'vulnerability' test gets passed.
 RUN yum -y update-minimal --security --sec-severity=Important --sec-severity=Critical
+
+# Remove entitlements and Subscription Manager configs
+RUN rm -rf /etc/pki/entitlement && \
+    rm -rf /etc/rhsm && \
+    rm /etc/rhsm/ca/*
+    rm /etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release
 
 # install python module python-3parclient(dependent module for HPE 3PAR Cinder driver)
 RUN curl "https://bootstrap.pypa.io/get-pip.py" -o "get-pip.py" && python get-pip.py && pip install -U setuptools && pip install python-3parclient==4.2.11 && rm get-pip.py
