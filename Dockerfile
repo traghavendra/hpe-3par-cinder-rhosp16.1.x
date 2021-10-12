@@ -23,11 +23,11 @@ COPY ./etc_pki_rpm-gpg/RPM-GPG-KEY-redhat-release /etc/pki/rpm-gpg
 
 RUN export http_proxy=http://web-proxy.atl.hpecorp.net:8080/ && export https_proxy=http://web-proxy.atl.hpecorp.net:8080/
 
-RUN rm /etc/rhsm-host && \
+#RUN rm /etc/rhsm-host && \
     # Initialize /etc/yum.repos.d/redhat.repo
     # See https://access.redhat.com/solutions/1443553
-    subscription-manager repos --disable=* && \
-    subscription-manager repos --enable=rhel-8-for-x86_64-baseos-rpms --enable=rhel-8-for-x86_64-appstream-rpms && \
+#    subscription-manager repos --disable=* && \
+#    subscription-manager repos --enable=rhel-8-for-x86_64-baseos-rpms --enable=rhel-8-for-x86_64-appstream-rpms && \
 
 # add below command so that, when container is built on 
 # RH catalog page, RH 'vulnerability' test gets passed.
